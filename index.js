@@ -107,6 +107,20 @@ app.get('/rooms', function (req, res) {
 
 
 
+
+app.post('/login', function (req, res) {
+
+	connection.query('select * from lecturers where supervisorArabicName = ? and supervisorNo = ?', [req.body.supervisorArabicName,req.body.supervisorNo], function (err, result) {
+		if (err) {
+			throw new Error("Error inserting " + err);
+		}
+		else
+			res.json(result);
+	})
+})
+
+
+
 app.get('/students/:courseNo/:sectionNo', function (req, res) {
 	var courseNo = req.params.courseNo;
 	var sectionNo = req.params.sectionNo;
@@ -331,6 +345,15 @@ app.get('/note/:id', function (req, res) {
 			res.json(result);
 	})
 })
+
+app.get('/notes/:id', function (req, res) {
+	var id = req.params.id;
+	connection.query('select * from notes where lecturerId = ?', id, function (err, result) {
+		if (!err)
+			res.json(result);
+	})
+})
+
 
 app.post('/note/update/:id', function (req, res) {
 	var id = req.params.id;
